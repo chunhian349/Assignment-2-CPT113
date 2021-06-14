@@ -1,0 +1,9 @@
+class Card
+{
+  private:
+    auto value;
+    string color;
+    Card *ptr;
+   public:
+    insert();
+ }
