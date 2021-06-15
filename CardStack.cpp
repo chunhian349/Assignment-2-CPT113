@@ -1,5 +1,5 @@
 #include <iostream>
-#include "Dealer.h"
+#include "CardStack.h"
 using namespace std;
 
 Dealer::~Dealer()
