@@ -6,14 +6,18 @@ class Group
 {
 	private:
 		Player *current;
+		
 	public:
-		Group(){ current = nullptr; };
+		Group();
 		~Group(){ clearPlayer(); };
 		void showCards();
 		void draw(string, string);
-		void play(int &, string &, string &);
+		void play(int, string &, string &);
 		bool isPlayable(string, string);
+		bool isPlayable(int, string, string);
 		void clearPlayer();
 		void switchPlayer();
-		bool cardCleared(){ return isEmpty(); };
+		int playerCardNum();
 };
+
+#endif
