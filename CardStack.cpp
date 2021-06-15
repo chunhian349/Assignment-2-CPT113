@@ -61,7 +61,7 @@ void CardStack::pop(string &value, string &color)
 	}
 }
 
-void CardStack::peekTop(string& value, string &color) const
+void CardStack::peekTop(string& value, string &color) 
 {
 	if(isEmpty())
 		cout << "There is no card left is the stack.\n";
