@@ -2,7 +2,7 @@
 #include "CardStack.h"
 using namespace std;
 
-Dealer::~Dealer()
+CardStack::~CardStack()
 {
 	Card *temp = nullptr;
 	while(cardTop != nullptr)
@@ -13,7 +13,7 @@ Dealer::~Dealer()
 	}
 }
 
-bool Dealer::isEmpty()
+bool CardStack::isEmpty()
 {
 	if(cardTop == nullptr)
 		return true;
@@ -21,7 +21,7 @@ bool Dealer::isEmpty()
 		return false;
 }
 
-void Dealer::push(auto T, string color)
+void CardStack::push(auto T, string color)
 {
 	Card *newNode = nullptr;
 	
@@ -41,7 +41,7 @@ void Dealer::push(auto T, string color)
 	}
 }
 
-void Dealer::pop(Card &object)
+void CardStack::pop(Card &object)
 {
 	Card *temp = nullptr;
 	
