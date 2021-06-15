@@ -1,5 +1,7 @@
 #ifndef CARDSTACK_H
 #define CARDSTACK_H
+#include <string>
+using namespace std;
 
 class CardStack
 {
@@ -17,7 +19,7 @@ class CardStack
 		~CardStack();
 		void push(string, string);
 		void pop(string&, string&);
-		void peekTop(string&, string&) const;
+		void peekTop(string&, string&);
 		bool isEmpty();
 };
 
