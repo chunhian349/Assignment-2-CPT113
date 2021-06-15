@@ -1,6 +1,10 @@
 #ifndef GROUP_H
 #define GROUP_H
 #include "Player.h"
+#include <string>
+using namespace std;
+
+class Player;
 
 class Group
 {
@@ -15,9 +19,10 @@ class Group
 		void play(int, string &, string &);
 		bool isPlayable(string, string);
 		bool isPlayable(int, string, string);
+		bool isIllegal(string, string);
 		void clearPlayer();
-		void switchPlayer();
 		int playerCardNum();
+		Player*& getCurrentPlayer() {	return current;	}
 };
 
 #endif
