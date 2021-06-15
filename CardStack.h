@@ -6,17 +6,19 @@ class CardStack
 	private:
 		struct Card
 		{
-			auto value;
+			string value;
 			string color;
 			Card *next;
 		};
 		Card *cardTop;
+		
 	public:
 		CardStack(){cardTop = nullptr;};
 		~CardStack();
-		void push(auto, string);
-		void pop(Card &);
+		void push(string, string);
+		void pop(string&, string&);
+		void peekTop(string&, string&) const;
 		bool isEmpty();
-}
+};
 
 #endif
