@@ -1,7 +1,7 @@
-#ifndef DEALER_H
-#define DEALER_H
+#ifndef CARDSTACK_H
+#define CARDSTACK_H
 
-class Dealer
+class CardStack
 {
 	private:
 		struct Card
@@ -12,8 +12,8 @@ class Dealer
 		};
 		Card *cardTop;
 	public:
-		Dealer(){cardTop = nullptr;};
-		~Dealer();
+		CardStack(){cardTop = nullptr;};
+		~CardStack();
 		void push(auto, string);
 		void pop(Card &);
 		bool isEmpty();
