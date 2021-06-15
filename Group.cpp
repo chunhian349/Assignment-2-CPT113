@@ -7,8 +7,8 @@ Group::Group()
 	Player* player1 = new Player;  
 	Player* player2 = new Player;
 	 
-	player1->next = player2; 
-	player2->next = player1;  
+	player1->setPlayerNext(player2);
+	player2->setPlayerNext(player1);
 	
 	current = player1;
 }
@@ -38,21 +38,18 @@ bool Group::isPlayable(int position, string value, string color)
 	return current->checkCard(position, value, color);
 }
 
-void Group::clearPlayer()
+bool Group::isIllegal(string discardpile_value, string discardpile_color)
 {
-	Player *playerPtr = nullptr;
-	
-	while(current != nullptr)
-	{
-		playerPtr = current;
-		current = current->next;
-		delete playerPtr;
-	}
+	return current->checkLegal(discardpile_value, discardpile_color);
 }
 
-void Group::switchPlayer()
+void Group::clearPlayer()
 {
-	current = current->next;
+	Player *player1 = current;
+	Player *player2 = current->getPlayerNext();
+	
+	delete player1;
+	delete player2;
 }
 
 int Group::playerCardNum()
