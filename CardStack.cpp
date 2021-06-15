@@ -21,12 +21,12 @@ bool CardStack::isEmpty()
 		return false;
 }
 
-void CardStack::push(auto T, string color)
+void CardStack::push(string value, string color)
 {
 	Card *newNode = nullptr;
 	
 	newNode = new Card;
-	newNode->value = T;
+	newNode->value = value;
 	newNode->color = color;
 	
 	if(isEmpty())
@@ -34,6 +34,7 @@ void CardStack::push(auto T, string color)
 		cardTop = newNode;
 		newNode->next = nullptr;
 	}
+	
 	else
 	{
 		newNode->next = cardTop;
@@ -41,17 +42,33 @@ void CardStack::push(auto T, string color)
 	}
 }
 
-void CardStack::pop(Card &object)
+void CardStack::pop(string &value, string &color)
 {
 	Card *temp = nullptr;
 	
 	if(isEmpty())
-		cout << "The stack is empty.\n";
+		cout << "There is no card left is the stack.\n";
+		
 	else
 	{
-		object = cardTop;
-		temp = cardTop->next;
-		delete cardTop;
-		cardTop = temp;
+		value = cardTop->value;
+		color = cardTop->color;
+		
+		temp = cardTop;
+		cardTop = cardTop->next;
+		
+		delete temp;
+	}
+}
+
+void CardStack::peekTop(string& value, string &color) const
+{
+	if(isEmpty())
+		cout << "There is no card left is the stack.\n";
+		
+	else
+	{
+		value = cardTop->value;
+		color = cardTop->color;
 	}
 }
