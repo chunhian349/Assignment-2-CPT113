@@ -14,6 +14,7 @@ void Player::insertCard(string value, string color)
 	
 	if(!first)
 		first = newNode;
+		
 	else
 	{
 		nodePtr = first;
@@ -33,6 +34,8 @@ void Player::insertCard(string value, string color)
 			newNode->next = nodePtr;
 		}
 	}
+	
+	num++;
 }
 
 void Player::showInfo() const
@@ -44,27 +47,28 @@ void Player::showInfo() const
 	}
 }
 
-void Player::playCard(int &index, string &value, string &color)
+void Player::playCard(int index, string &value, string &color)
 {
 	Card *nodePtr = nullptr;
-	int count = 0;
+	Card *previousPtr = nullptr;
+	int count = 1;
 	
 	if(!first)
 		cout << "List is empty.";
 	
-	if(first->value == value && first->color == color)
+	else if(index == 1)
 	{
-		index = 1;
 		value = first->value;
 		color = first->color;
 		nodePtr = head->next;
 		delete head;
 		head = nodePtr;
 	}
+	
 	else
 	{
 		nodePtr = first;
-		while(nodePtr != nullptr && nodePtr->value != value && nodePtr->color != color)
+		while(nodePtr != nullptr && count != index)
 		{
 			previousNode = nodePtr;
 			nodePtr = nodePtr->next;
@@ -73,23 +77,26 @@ void Player::playCard(int &index, string &value, string &color)
 		
 		if(nodePtr)
 		{
-			index = count;
 			value = nodePtr->value;
 			color = nodePtr->color;
-			previousNode->next = nodePtr->next;
+			previous->next = nodePtr->next;
 			delete nodePtr;
 		}
+		
+		else
+			cout<<"Index exceed number of cards.\n";
 	}
-	// discard tile, don't know yet
+	
+	num--;
 }
 
-bool Player::checkCard(int index, string value, string color)
+bool Player::checkCard(string value, string color)
 {
-	Card *card = nullptr;
-	card = first;
-	while(card == nullptr)
+	Card *card = first;
+	
+	while(card != nullptr)
 	{
-		if((card->value == "Wild" || card->value == "Wild Plus 4") && card->color == "Black")
+		if((card->value == "Wild" || card->value == "Wild Draw 4") && card->color == "Black")
 			return true;
 		else if(card->value == value || card->color == color)
 			return true;
@@ -97,6 +104,25 @@ bool Player::checkCard(int index, string value, string color)
 			return false;
 		card = card->next;
 	}
+}
+
+bool Player::checkCard(int position, string value, string color)
+{
+	Card *card = first;
+	int count = 1;
+	
+	while(count != position && card != nullptr)
+	{
+		card = card->next;
+		count++;
+	}
+	
+	if((card->value == "Wild" || card->value == "Wild Draw 4") && card->color == "Black")
+		return true;
+	else if(card->value == value || card->color == color)
+		return true;
+	else
+		return false;
 }
 
 void Player::clearCard()
@@ -112,4 +138,6 @@ void Player::clearCard()
 		delete nodePtr;
 		nodePtr = nextNode;
 	}
+	
+	num = 0;
 }
