@@ -213,7 +213,7 @@ void takeTurn(Group &current_group, CardStack &discardpile, CardStack &drawpile)
 		drawpile.pop(draw_value, draw_color);
 		
 		//If card drawn can be played, the player must play it
-		if(draw_color==”Black” || draw_value==discardpile_value ||  draw_color==discardpile_color)
+		if(draw_color=="Black" || draw_value==discardpile_value ||  draw_color==discardpile_color)
 		{
 			discardpile.push(draw_value, draw_color);
 			cout<<"Top of discard pile now is ("<<draw_value<<", "<<draw_color<<")"<<endl;
@@ -229,7 +229,7 @@ void takeTurn(Group &current_group, CardStack &discardpile, CardStack &drawpile)
 
 void skip(int &turn)
 {
-	cout<<"Used skip, skip the next player’s move"<<endl; 
+	cout<<"Used skip, skip the next playerâ€™s move"<<endl; 
 	turn+=2;  
 } //next loop become 2nd next player
 
@@ -291,10 +291,10 @@ void wild(int &turn, CardStack &discardpile)
 	
 	switch(choice) 
 	{ 
-		case 1 : cout<<"Player chose Red color\n"; discardpile.push(“ “, “Red”);	break; 
-		case 2 : cout<<"Player chose Green color\n"; discardpile.push(“ “, “Green”);	break; 
-		case 3 : cout<<"Player chose Blue color\n";  discardpile.push(“ “, “Blue”);	break; 
-		case 4 : cout<<"Player chose Yellow color\n";  discardpile.push(“ “, “Yellow”);  
+		case 1 : cout<<"Player chose Red color\n"; discardpile.push(â€œ â€œ, â€œRedâ€);	break; 
+		case 2 : cout<<"Player chose Green color\n"; discardpile.push(â€œ â€œ, â€œGreenâ€);	break; 
+		case 3 : cout<<"Player chose Blue color\n";  discardpile.push(â€œ â€œ, â€œBlueâ€);	break; 
+		case 4 : cout<<"Player chose Yellow color\n";  discardpile.push(â€œ â€œ, â€œYellowâ€);  
 	} 
 
 	turn++; 
@@ -446,19 +446,19 @@ int main()
 		discardpile.peekTop(discardpile_value, discardpile_color); 
 	
 		//Check the played card is power card that affect the player's move
-		if(discardpile_value==”Skip”) 
+		if(discardpile_value==â€Skipâ€) 
 			skip(turn); 
 	
-		else if(discardpile_value==”Reverse”) 
+		else if(discardpile_value==â€Reverseâ€) 
 			reverse(turn, group);	 
 	
-		else if(discardpile_value==Draw 2”) 
+		else if(discardpile_value==Draw 2â€) 
 			draw2(turn, group, drawpile); 
 	
-		else if(discardpile_value==”Wild”) 
+		else if(discardpile_value==â€Wildâ€) 
 			wild(turn, discardpile); 
 	
-		else if(discardpile_value==”Wild Draw 4”) 
+		else if(discardpile_value==â€Wild Draw 4â€) 
 			draw4(turn, group, drawpile, discardpile); 
 	
 		else 
