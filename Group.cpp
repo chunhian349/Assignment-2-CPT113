@@ -48,7 +48,6 @@ bool Group::isIllegal(string discardpile_value, string discardpile_color)
 void Group::clearPlayer()
 {
 	Player *player1 = current;
-	//Player *player2 = current->getPlayerNext();
 	Player *player2 = current->next;
 	
 	delete player1;
