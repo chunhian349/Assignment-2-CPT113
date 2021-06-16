@@ -2,6 +2,8 @@
 #include "CardStack.h"
 using namespace std;
 
+//Destructor
+//Delete all the node(Card object) to free dynamic memory space
 CardStack::~CardStack()
 {
 	Card *temp = nullptr;
@@ -13,6 +15,7 @@ CardStack::~CardStack()
 	}
 }
 
+//Check the stack is empty or not
 bool CardStack::isEmpty()
 {
 	if(cardTop == nullptr)
@@ -21,6 +24,7 @@ bool CardStack::isEmpty()
 		return false;
 }
 
+//Push card onto top of the stack
 void CardStack::push(string value, string color)
 {
 	Card *newNode = nullptr;
@@ -42,6 +46,9 @@ void CardStack::push(string value, string color)
 	}
 }
 
+//Pop the card from the top of stack
+//The content of popped Card object store into reference variables
+//Then delete the popped object
 void CardStack::pop(string &value, string &color)
 {
 	Card *temp = nullptr;
@@ -61,6 +68,7 @@ void CardStack::pop(string &value, string &color)
 	}
 }
 
+//Peek the content of card at the top of the stack
 void CardStack::peekTop(string& value, string &color) 
 {
 	if(isEmpty())
