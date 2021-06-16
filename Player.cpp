@@ -2,16 +2,6 @@
 #include <iostream>
 using namespace std;
 
-void Player::setPlayerNext(Player* next_player)
-{
-	next = next_player;
-}
-
-Player* Player::getPlayerNext()
-{
-	return next;
-}
-
 void Player::insertCard(string value, string color)
 {
 	Card *newNode = nullptr;
