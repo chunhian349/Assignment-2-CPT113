@@ -4,10 +4,12 @@
 #include <string>
 using namespace std;
 
+//Group contain circular linked list of Player object
+//Allow switching to next player after the player's turn
 class Group
 {
 	private:
-		Player *current;
+		Player *current; //Point to current player to be played when the group take turn
 		
 	public:
 		Group();
