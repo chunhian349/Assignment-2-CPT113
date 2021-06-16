@@ -19,7 +19,7 @@ void Player::insertCard(string value, string color)
 	else
 	{
 		nodePtr = first;
-		while(nodePtr != nullptr && nodePtr->color != color)
+		while(nodePtr != nullptr && nodePtr->color < color)
 		{
 			previousNode = nodePtr;
 			nodePtr = nodePtr->next;
