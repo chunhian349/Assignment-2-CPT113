@@ -497,6 +497,9 @@ int main()
 			break;
 		}
 		
+		else if(group[current_group_subscript].playerCardNum() == 1 )
+			cout<<"Group "<<current_group_subscript+1<<" Player "<<group[current_group_subscript].getPlayerSequence()<<" says UNO!!!\n";
+		
 		discardpile.peekTop(discardpile_value, discardpile_color); 
 		
 		//If current player do not play card, any power card on the discard pile should be ignored
