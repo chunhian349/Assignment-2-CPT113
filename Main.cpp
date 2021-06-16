@@ -6,7 +6,8 @@
 #include "Player.h"
 using namespace std;
 
-// Function shuffle
+//Randomly shuffle the array of Card objects
+//Then push into drawpile CardStack one by one
 void shuffle(CardStack &drawpile)
 {
 	const int SIZE = 108;
@@ -17,7 +18,7 @@ void shuffle(CardStack &drawpile)
 		string color;
 	};
 	
-    // Array from 0 to 107
+    // There are 108 different UNO cards
 	Card card[SIZE] = {"0", "Red",
 					"1", "Red",
 					"1", "Red",
@@ -146,6 +147,8 @@ void shuffle(CardStack &drawpile)
         
 }
 
+//Distribute card from one player to another player
+//Each player get 7 cards
 void distribute(Group *group, CardStack &drawpile, CardStack &discardpile)
 {
 	string draw_value, draw_color;
@@ -154,7 +157,7 @@ void distribute(Group *group, CardStack &drawpile, CardStack &discardpile)
 	{
 		for(int j=1; j<=2; j++) //Each group has 2 players
 		{
-			for(int k=0; k<2; k++) //Sequence of each card g1p1 -> g2p1 -> g1p2 -> g2p2
+			for(int k=0; k<2; k++) //Sequence of each card g1p1 -> g2p1 -> g1p2 -> g2p2 -> g1p1 -> ...
 			{
 				drawpile.pop(draw_value, draw_color);
 				group[k].draw(draw_value, draw_color);
@@ -163,6 +166,8 @@ void distribute(Group *group, CardStack &drawpile, CardStack &discardpile)
 		}	
 	}
 	
+	//After distribute, draw until get a number card then push on the discard pile
+	//To determine what card should the first player play
 	drawpile.pop(draw_value, draw_color);
 	
 	while(draw_value == "Skip" || draw_value == "Reverse" || draw_value == "Draw 2" || draw_value == "Wild" || draw_value == "Wild Draw 4")
@@ -173,20 +178,24 @@ void distribute(Group *group, CardStack &drawpile, CardStack &discardpile)
 	discardpile.push(draw_value, draw_color);
 }
 
-//Player of this group's turn 
+//Player of the current group's turn 
 void takeTurn(Group &current_group, CardStack &discardpile, CardStack &drawpile, bool &ignore_discard_pile)
 {
 	string discardpile_value, discardpile_color;
 	
+	//Show the player's cards
 	cout<<"Card List: \n";
 	current_group.showCards();
 	
+	//Get the value and color of the card at the top of discard pile
 	discardpile.peekTop(discardpile_value, discardpile_color);
 	
+	//If the player has at least one card to play
 	if(current_group.isPlayable(discardpile_value, discardpile_color))
 	{
 		int position;
 		
+		//Input the position of the card to be played
 		cout<<"Choose the position of the card to be played : ";
 		cin>>position;
 		
@@ -197,7 +206,7 @@ void takeTurn(Group &current_group, CardStack &discardpile, CardStack &drawpile,
 			cin>>position;
 		}
 		
-		//Player must choose the valid card (match symbol or color or use wildcard)
+		//Player must choose the valid card (match symbol or color, or wildcard)
 		while(!current_group.isPlayable(position, discardpile_value, discardpile_color))
 		{
 			cout<<"The card chosen not match with the card at discard pile, please choose a valid card: ";
@@ -216,8 +225,9 @@ void takeTurn(Group &current_group, CardStack &discardpile, CardStack &drawpile,
 		cout<<"You played a card...\n";
 	}
 	
-	else
+	else //If the player has no card match with discard pile
 	{
+		//Need draw a card from top of draw pile
 		cout<<"No card can be played, need draw card from draw pile...\n";
 		string draw_value, draw_color;
 		
@@ -230,12 +240,15 @@ void takeTurn(Group &current_group, CardStack &discardpile, CardStack &drawpile,
 			discardpile.push(draw_value, draw_color);
 		}
 			
-		else 
+		else //If the card drawn cannot be played, store in the card list of the player
 		{
 			cout<<"Drawn card cannot be played, remain at your hand...\n";
 			current_group.draw(draw_value, draw_color);
 			
-			ignore_discard_pile = true;
+			//This player did not play any card
+			//The power/wild card played by previous player which still on the discard pile may trigger again
+			//The power/wild card should be ignored
+			ignore_discard_pile = true; 
 		}
 			
 	}
@@ -244,12 +257,13 @@ void takeTurn(Group &current_group, CardStack &discardpile, CardStack &drawpile,
 	cout<<endl;
 }
 
+//Current player played skip card
 void skip(int &turn, Group group[], int current_group_subscript)
 {
 	cout<<"Used skip, skip the next player's move"<<endl; 
 	
 	if(current_group_subscript == 0) //group 1 player skip group 2 player
-		group[1].switchPlayer();
+		group[1].switchPlayer(); 
 	
 	else //group 2 player skip group 1 player
 		group[0].switchPlayer();
@@ -257,19 +271,23 @@ void skip(int &turn, Group group[], int current_group_subscript)
 	turn+=2;  
 } //next loop become 2nd next player
 
-void reverse(int &turn, Group group[]) //Change current player of other group to next 
+//Current player played reverse card
+//Reverse the player sequence by switching other group's player
+//Example g1p1 -> g2p1 -> g1p2 become g1p1 -> g2p2 -> g1p2
+void reverse(int &turn, Group group[]) 
 { 
 	cout<<"Used reverse, the sequence is reversed"<<endl; 
 
-	if(turn % 2 == 1) //group 1 used the reverse card 
-		group[1].switchPlayer(); //Player of next group will change to another player as seqeunce reverse
+	if(turn % 2 == 1) //Group 1 player used the reverse card 
+		group[1].switchPlayer(); 
 	
-	else 
-		group[0].switchPlayer();
+	else  //Group 2 player used reverse card
+		group[0].switchPlayer(); 
 
 	turn++; 
 } 
 
+//Current player played draw 2 card to next player
 void draw2(int &turn, Group group[], CardStack &drawpile) 
 { 
 	string draw_value, draw_color; 
@@ -301,6 +319,8 @@ void draw2(int &turn, Group group[], CardStack &drawpile)
 	turn+=2; //skip next player 
 } 
 
+//Current player played wild card
+//Select a desired color to change the color can be played on the discardpile
 void wild(int &turn, CardStack &discardpile) 
 { 
 	int choice;
@@ -332,12 +352,14 @@ void wild(int &turn, CardStack &discardpile)
 	turn++; 
 } 
 
+//Current player played wild draw 4 card
 void draw4(int &turn, Group group[], CardStack &drawpile, CardStack &discardpile) 
 { 
 	string chosen_color; 
 
 	char choice;
 	
+	//Select a desired color to change the color can be played on the discardpile 
 	cout<<"You used wild draw 4 card.\n";
 	cout<<"Please determine the color on the discard pile: \n"; 
 	cout<<"1: Red\n"; 
@@ -394,7 +416,9 @@ void draw4(int &turn, Group group[], CardStack &drawpile, CardStack &discardpile
 		discardpile.pop(discardpile_value, discardpile_color); //This get the +4 record
 		discardpile.peekTop(discardpile_value, discardpile_color); //This get the card at discard pile before +4 played
 	
-		if(group[challenged].isIllegal(discardpile_value, discardpile_color) ) //challenge successfully 
+		//Challenge successfully
+		//Means the player can play a non-wild card before he/she choose to play wild draw 4
+		if(group[challenged].isIllegal(discardpile_value, discardpile_color) ) 
 		{
 			cout<<"Challenge successfully, opponent draw 4 cards, your move still will be skipped.\n"; 
 	
@@ -419,7 +443,7 @@ void draw4(int &turn, Group group[], CardStack &drawpile, CardStack &discardpile
 		group[challenger].switchPlayer();
 	}
 
-	else //refuse to challenge, next player draw 4 cards
+	else //No attempt to challenge, draw 4 cards and skip
 	{
 		cout<<"You will draw 4 cards and your move will be skipped.\n";
 		
@@ -455,9 +479,12 @@ void draw4(int &turn, Group group[], CardStack &drawpile, CardStack &discardpile
 
 int main()
 {
+	//2 instance of CardStack:
+	//	-Drawpile stack where the player draw the card at the top of the stack
+	//	-Discardpile stack where the player place the played card at the top of the stack	
 	CardStack drawpile, discardpile; 
 
-	Group group[2]; 
+	Group group[2]; //This game is 2v2 (2 groups, 2 players each group)
 	
 	cout<<"Game start...\n";
 	cout<<"Distribute card to each player...\n";
@@ -469,40 +496,44 @@ int main()
 	int current_group_subscript;
 	const int max_turn = 50; 
 	
-	while(turn <= max_turn) //Loop until player win the game or max turn reached
+	while(turn <= max_turn) //Game continues until player win the game or max turn reached
 	{
+		//Show the card at the top of discard pile to know which card can be played 
  		string discardpile_value, discardpile_color;
 		discardpile.peekTop(discardpile_value, discardpile_color); 
 		cout<<"\nTop of discard pile now is ("<<discardpile_value<<", "<<discardpile_color<<")"<<endl;
 		cout<<"Turn: "<<turn<<endl;
 		
-		if(turn % 2 == 1) //Now is group 1 player's move
+		if(turn % 2 == 1) //Odd turn, group 1 player's move
 		{
 			current_group_subscript = 0;
 			cout<<"Group 1 Player "<<group[current_group_subscript].getPlayerSequence()<<"'s move..."<<endl;
 		}
 		
-		else //Now is group 2 player's move
+		else //Even turn, group 2 player's move
 		{
 			current_group_subscript = 1;
 			cout<<"Group 2 Player "<<group[current_group_subscript].getPlayerSequence()<<"'s move..."<<endl;
 		}
 		
-		bool ignore_discard_pile = false; //Ignore because power card should trigger once only
+		bool ignore_discard_pile = false; //Ignore power/wild card on the discard pile if the card is played by previous player
 		takeTurn(group[current_group_subscript], discardpile, drawpile, ignore_discard_pile); 
 
+		//If the player cleared all the card before max turn, the player and teammate win.
 		if(group[current_group_subscript].playerCardNum() == 0 )
 		{
 			cout<<"A player of group "<<current_group_subscript+1<<" has cleared all the card, group "<<current_group_subscript+1<<" win!!!\n"; 
 			break;
 		}
 		
+		//If the player left 1 card after played a card, the player will say 'UNO'
 		else if(group[current_group_subscript].playerCardNum() == 1 )
 			cout<<"Group "<<current_group_subscript+1<<" Player "<<group[current_group_subscript].getPlayerSequence()<<" says UNO!!!\n";
 		
+		//Get the card played by current player
 		discardpile.peekTop(discardpile_value, discardpile_color); 
 		
-		//If current player do not play card, any power card on the discard pile should be ignored
+		//If current player has played a card, check the type of card played
 		if(ignore_discard_pile == false)
 		{
 			//Check the played card is power card that affect the player's move
@@ -525,15 +556,19 @@ int main()
 				turn++; 
 		}
 		
+		//If current player do not play card, power/wild card on the discard pile played by previous player should be ignored
 		else
 			turn++;
 		
+		//Next same group's turn should be next player play the card 
+		//Example g1p1 -> g2p1 -> g1p2 so next time g1's turn should switched to p2
 		group[current_group_subscript].switchPlayer();
 		cout<<"Next player...\n";
 		system("pause");
 		system("cls");
 	}
 	
+	//If the loop exit because exceed maximum turn, the match is considered draw
 	if(turn > max_turn)
 	{
 		cout<<"Number of turns exceed the maximum turn, this match considered draw...\n";
