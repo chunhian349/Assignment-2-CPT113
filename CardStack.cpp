@@ -47,7 +47,7 @@ void CardStack::pop(string &value, string &color)
 	Card *temp = nullptr;
 	
 	if(isEmpty())
-		cout << "There is no card left is the stack.\n";
+		cout << "There is no card left in the stack.\n";
 		
 	else
 	{
@@ -64,7 +64,7 @@ void CardStack::pop(string &value, string &color)
 void CardStack::peekTop(string& value, string &color) 
 {
 	if(isEmpty())
-		cout << "There is no card left is the stack.\n";
+		cout << "There is no card left in the stack.\n";
 		
 	else
 	{
