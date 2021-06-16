@@ -2,6 +2,7 @@
 #include <iostream>
 using namespace std;
 
+//Insert the drawn card into the list, sort based on color of the card
 void Player::insertCard(string value, string color)
 {
 	Card *newNode = nullptr;
@@ -36,9 +37,10 @@ void Player::insertCard(string value, string color)
 		}
 	}
 	
-	num++;
+	num++; //After draw a card, number of card increased 1
 }
 
+//Print all the cards the player currently hold at the player's turn
 void Player::showInfo() const
 {
 	Card *nodePtr = first;
@@ -54,6 +56,7 @@ void Player::showInfo() const
 	cout<<endl;
 }
 
+//Play a card at the selected position out from the list 
 void Player::playCard(int index, string &value, string &color)
 {
 	Card *nodePtr = nullptr;
@@ -97,6 +100,9 @@ void Player::playCard(int index, string &value, string &color)
 	num--;
 }
 
+//Check if there is any card that match with value or color of card at discard pile
+//Return true if matched or the player has wild cards
+//Otherwise return false
 bool Player::checkCard(string value, string color)
 {
 	Card *card = first;
@@ -121,6 +127,7 @@ bool Player::checkCard(string value, string color)
 	return flag;
 }
 
+//Check the card at the selected position is match with value or color of card at discard pile
 bool Player::checkCard(int position, string value, string color)
 {
 	Card *card = first;
@@ -140,6 +147,8 @@ bool Player::checkCard(int position, string value, string color)
 		return false;
 }
 
+//Check if the player played draw 4 legally
+//I.e. The player can play a non-wild card before he/she choose to play wild draw 4
 bool Player::checkLegal(string discardpile_value, string discardpile_color)
 {
 	Card *card = first;
@@ -156,6 +165,8 @@ bool Player::checkLegal(string discardpile_value, string discardpile_color)
 	return false;
 }
 
+//Will call by destructor
+//Delete all the dynamic card object to free memory space at the end of the program
 void Player::clearCard()
 {
 	Card *nodePtr = nullptr;
