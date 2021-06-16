@@ -4,11 +4,13 @@
 #include <iostream>
 using namespace std;
 
-class Group;
+//Forward declaration to allow declaration of friend class
+class Group; 
 
 class Player
 {
 	private:
+		//Card that the player hold is stored in singly linked list
 		struct Card
 		{
 			string value;
@@ -16,10 +18,11 @@ class Player
 			Card *next;
 		};
 		
-		Card *first;
-		Player *next;
+		Card *first;	//Points to the first card of the list
+		Player *next;	//Points to the next Player object of same group
 		int sequence; //1st player or 2nd player of the group
 		int num; //Number of card on the player's hand
+	
 		
 	public:
 		Player(){ first = nullptr; next = nullptr; num = 0;	sequence = 0; };
@@ -32,7 +35,7 @@ class Player
 		bool checkLegal(string, string);
 		void clearCard();
 		
-		friend class Group;
+		friend class Group; //Allow group class access to private member of player class
 };
 
 #endif
