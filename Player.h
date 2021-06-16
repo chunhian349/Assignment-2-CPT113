@@ -4,6 +4,8 @@
 #include <iostream>
 using namespace std;
 
+class Group;
+
 class Player
 {
 	private:
@@ -16,22 +18,21 @@ class Player
 		
 		Card *first;
 		Player *next;
-		int num;
+		int sequence; //1st player or 2nd player of the group
+		int num; //Number of card on the player's hand
 		
 	public:
-		Player(){ first = nullptr; next = nullptr; num = 0;	};
+		Player(){ first = nullptr; next = nullptr; num = 0;	sequence = 0; };
 		~Player(){ clearCard(); }
-		void setPlayerNext(Player*);
-		Player* getPlayerNext();
-		void insertCard(string, string);
-		void showInfo() const;
-		void playCard(int, string &, string &);
+		void insertCard(string, string); 
+		void showInfo() const; 
+		void playCard(int, string &, string &); 
 		bool checkCard(string, string);
 		bool checkCard(int, string, string);
 		bool checkLegal(string, string);
-		int getCardNum() const {	return num;	};
 		void clearCard();
-		friend void switchPlayer(Player *&);
+		
+		friend class Group;
 };
 
 #endif
