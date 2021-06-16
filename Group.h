@@ -4,8 +4,6 @@
 #include <string>
 using namespace std;
 
-class Player;
-
 class Group
 {
 	private:
@@ -22,7 +20,8 @@ class Group
 		bool isIllegal(string, string);
 		void clearPlayer();
 		int playerCardNum();
-		Player*& getCurrentPlayer() {	return current;	}
+		void switchPlayer();
+		int getPlayerSequence() const;
 };
 
 #endif
