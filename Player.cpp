@@ -146,7 +146,7 @@ bool Player::checkLegal(string discardpile_value, string discardpile_color)
 	
 	while(card != nullptr)
 	{
-		if(card->color == discardpile_value || card->value == discardpile_color)
+		if(card->value == discardpile_value || card->color == discardpile_color)
 		{
 			return true;
 		}
