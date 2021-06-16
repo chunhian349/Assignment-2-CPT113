@@ -170,7 +170,7 @@ void distribute(Group *group, CardStack &drawpile, CardStack &discardpile)
 		drawpile.pop(draw_value, draw_color);
 	}
 	
-	cout<<"Discard pile now has card ("<<draw_value<<", "<<draw_color<<")"<<endl;
+	cout<<"First card on the discard pile is ("<<draw_value<<", "<<draw_color<<")"<<endl;
 	discardpile.push(draw_value, draw_color);
 }
 
@@ -457,6 +457,9 @@ int main()
 
 	Group group[2]; 
 
+	cout<<"Game start...\n";
+	cout<<"Distribute card to each player...\n";
+	system("pause");
 	shuffle(drawpile); //Generate and shuffle cards randomly
 	distribute(group, drawpile, discardpile); //distribute cards to players 
 
