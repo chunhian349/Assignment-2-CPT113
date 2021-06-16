@@ -170,7 +170,6 @@ void distribute(Group *group, CardStack &drawpile, CardStack &discardpile)
 		drawpile.pop(draw_value, draw_color);
 	}
 	
-	cout<<"First card on the discard pile is ("<<draw_value<<", "<<draw_color<<")"<<endl;
 	discardpile.push(draw_value, draw_color);
 }
 
@@ -306,6 +305,7 @@ void wild(int &turn, CardStack &discardpile)
 { 
 	int choice;
 
+	cout<<"You used wild card.\n";
 	cout<<"Please determine the color on the discard pile: \n"; 
 	cout<<"1: Red\n"; 
 	cout<<"2: Green\n"; 
@@ -337,7 +337,8 @@ void draw4(int &turn, Group group[], CardStack &drawpile, CardStack &discardpile
 	string chosen_color; 
 
 	char choice;
-
+	
+	cout<<"You used wild draw 4 card.\n";
 	cout<<"Please determine the color on the discard pile: \n"; 
 	cout<<"1: Red\n"; 
 	cout<<"2: Green\n"; 
@@ -361,7 +362,7 @@ void draw4(int &turn, Group group[], CardStack &drawpile, CardStack &discardpile
 	}
 
 	//Ask next player to challenge the player that used draw 4 card
-	cout<<"Do you think opponent played draw 4 illegally? (Y/N)\n";
+	cout<<"Question to next player: Do you think opponent played draw 4 illegally? (Y/N)\n";
 	cin>>choice; 
 	
 	while(choice != 'Y' && choice != 'y' && choice != 'N' && choice != 'n')
@@ -391,7 +392,7 @@ void draw4(int &turn, Group group[], CardStack &drawpile, CardStack &discardpile
 		string discardpile_value, discardpile_color;
 	
 		discardpile.pop(discardpile_value, discardpile_color); //This get the +4 record
-		discardpile.pop(discardpile_value, discardpile_color); //This get the card at discard pile before +4 played
+		discardpile.peekTop(discardpile_value, discardpile_color); //This get the card at discard pile before +4 played
 	
 		if(group[challenged].isIllegal(discardpile_value, discardpile_color) ) //challenge successfully 
 		{
@@ -448,7 +449,8 @@ void draw4(int &turn, Group group[], CardStack &drawpile, CardStack &discardpile
 	discardpile.push("Wild Draw 4", chosen_color); //Change color of discardpile
 
 	turn+=2; //Skip next player's turn
-
+	
+	cout<<endl;
 } 
 
 int main()
@@ -456,7 +458,7 @@ int main()
 	CardStack drawpile, discardpile; 
 
 	Group group[2]; 
-
+	
 	cout<<"Game start...\n";
 	cout<<"Distribute card to each player...\n";
 	system("pause");
@@ -466,9 +468,12 @@ int main()
 	int turn = 1;
 	int current_group_subscript;
 	const int max_turn = 50; 
-
+	
 	while(turn <= max_turn) //Loop until player win the game or max turn reached
 	{
+ 		string discardpile_value, discardpile_color;
+		discardpile.peekTop(discardpile_value, discardpile_color); 
+		cout<<"\nTop of discard pile now is ("<<discardpile_value<<", "<<discardpile_color<<")"<<endl;
 		cout<<"Turn: "<<turn<<endl;
 		
 		if(turn % 2 == 1) //Now is group 1 player's move
@@ -492,9 +497,7 @@ int main()
 			break;
 		}
 		
- 		string discardpile_value, discardpile_color;
 		discardpile.peekTop(discardpile_value, discardpile_color); 
-		cout<<"Top of discard pile now is ("<<discardpile_value<<", "<<discardpile_color<<")"<<endl;
 		
 		//If current player do not play card, any power card on the discard pile should be ignored
 		if(ignore_discard_pile == false)
@@ -523,11 +526,14 @@ int main()
 			turn++;
 		
 		group[current_group_subscript].switchPlayer();
+		cout<<"Next player...\n";
+		system("pause");
+		system("cls");
 	}
 	
 	if(turn > max_turn)
 	{
-		cout<<"Number of turns exceed to maximum turn, this match considered draw...\n";
+		cout<<"Number of turns exceed the maximum turn, this match considered draw...\n";
 	}
 
 	return 0;
